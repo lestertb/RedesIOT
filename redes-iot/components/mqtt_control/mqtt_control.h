@@ -22,7 +22,9 @@
 #include "esp_ota_ops.h"
 #include <sys/param.h>
 
-
+/*
+variables globales para usar como parametros de configuracion
+*/
 esp_mqtt_client_handle_t client;
 #define MAX_MSG_LEN 1024
 char incoming_topic[MAX_MSG_LEN];
@@ -31,12 +33,16 @@ char incoming_msg[MAX_MSG_LEN];
 
 bool is_connected;
 
-void (*process_data_prt)(const char *topic, const char *msg);
 
-void mqtt_app_start(void);
+float minimoHumedad;
+float minimoTiempoHumedad;
+float minimoTiempoTemperatura;
+void (*process_data_prt)(const char *topic, const char *msg);//procesa la data recibida
 
-void publish_data(const char* topic, const char* message);
+void mqtt_app_start(void);//inicie el server  mqtt
 
-void subscribe_topic(const char *topic);
+void publish_data(const char* topic, const char* message);//publica en el node red
+
+void subscribe_topic(const char *topic); //se suscribe a un topic del node red
 
 #endif

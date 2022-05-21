@@ -1,7 +1,11 @@
 #include "mqtt_control.h"
+#include <stdio.h>
+#include <string.h>
 
+//tag dde ejemplo para la impresion en la consola
 static const char *TAG = "MQTTS_EXAMPLE";
 
+//certificado generado desde el certbot
 static const uint8_t mqtt_arenalconnected_pem_start[] =     "-----BEGIN CERTIFICATE-----\n"
                                                             "MIIDsTCCApmgAwIBAgIUeavAwhmHPmI+jbIh1jj/tqQE24swDQYJKoZIhvcNAQEL\n"
                                                             "BQAwaDELMAkGA1UEBhMCQ1IxETAPBgNVBAgMCEFsYWp1ZWxhMQ4wDAYDVQQHDAVQ\n"
@@ -81,6 +85,29 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         ESP_LOGI(TAG, "MQTT_EVENT_DATA");
         printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
         printf("DATA=%.*s\r\n", event->data_len, event->data);
+            /*
+                aqui se recibe cual topico se esta suscribiendo para recibir los parametros de configuracion desde el node red y enviarlos a las tareas de los sensores
+            */
+            char *topico;
+            asprintf(&topico, "%.*s", event->topic_len, event->topic);
+        if (strcmp(topico, "configparams") == 0)
+            {
+                 char *data;
+                asprintf(&data, "%.*s", event->data_len, event->data);
+                char *token = strtok(data, "-");
+                char * token2;
+                token2 = strtok(NULL, "-");
+                minimoHumedad = atof(token);
+                minimoTiempoHumedad = atof(token2);
+            }
+            else if(strcmp(topico, "configparams2") == 0)
+            {
+                char *data2;
+                asprintf(&data2, "%.*s", event->data_len, event->data);
+                minimoTiempoTemperatura = atof(data2);
+
+            }
+        
         //TODO Here you can handle all the incoming info
         break;
     case MQTT_EVENT_ERROR:
@@ -107,6 +134,7 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
     }
 }
 
+//inicia el mosquitto, con la direccion del subdominio que nos facilito el profesor
 void mqtt_app_start(void)
 {
     is_connected = false;
@@ -123,14 +151,14 @@ void mqtt_app_start(void)
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(client);
 }
-
+//metodo usado para publicar en el node red
 void publish_data(const char* topic, const char* message){
     if (!is_connected)
         return;
     esp_mqtt_client_publish(client, topic, message, 0, 1, 0);
     ESP_LOGI("MQTT", "publish_data (%s) -> %s", topic, message);
 }
-
+//metodo utilizado para suscribirse a un topic del node red
 void subscribe_topic(const char *topic){
     if (!is_connected)
         return;

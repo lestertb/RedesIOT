@@ -50,7 +50,7 @@ default 6
 #define MESH_MAX_LAYER          6
             
         
-//Channel 0 14  default 0
+//Channel 0 14  default 0, credenciales del router
 #define MESH_CHANNEL            0
 #define ROUTER_SSID             "Familia Espinoza Salas" //luillidei
 #define ROUTER_PASSWD           "gmse1416" //luillidei
@@ -66,10 +66,10 @@ default 4 if WIFI_AUTH_WPA_WPA2_PSK
 //Connections  0  10  default 6
 #define MESH_AP_CONNECTIONS     2
 
-#define MESH_AP_PASSWD          "RedesIoT"
+#define MESH_AP_PASSWD          "RedesIoT" //contrasenna para acceso de nodos hijos al nodo raiz
 
 
 int mesh_layer;
-esp_err_t iniciar_mesh_red();
+esp_err_t iniciar_mesh_red(); //funcion para iniciar la red mesh
 
 #endif

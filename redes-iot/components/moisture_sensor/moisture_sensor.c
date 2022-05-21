@@ -16,7 +16,7 @@ esp_err_t init_adc_config()
     return err;
 }
 
-int filtrar_datos()
+int filtrar_datos() //funcion para el filtrado de datos de los valores digitales del sensor
 {
     uint16_t contador = 0;
     int sum_valores = 0;
@@ -27,7 +27,7 @@ int filtrar_datos()
     return sum_valores/NUM_SAMPLES;
 }
 
-float calcular_porcentaje_humedad(){
+float calcular_porcentaje_humedad(){ // se obtiene el porcentaje de la humedad usando la funcion en la que obtiene los valores digitales del sensor
     int valor_digital = filtrar_datos();
     return -0.0444*valor_digital + 177.78;
 }

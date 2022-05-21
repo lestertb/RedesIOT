@@ -13,11 +13,11 @@
 
 // == function prototypes =======================================
 
-void 	setDHTgpio(int gpio);
+void 	setDHTgpio(int gpio); //setear el puerto en el esp
 void 	errorHandler(int response);
-int 	readDHT();
-float 	getHumidity();
-float 	getTemperature();
+int 	readDHT();//se usa para iniciarlizar el sensor
+float 	getHumidity();//obtiene la humedad
+float 	getTemperature();//obtiene la temperatura
 int 	getSignalLevel( int usTimeOut, bool state );
 
 #endif

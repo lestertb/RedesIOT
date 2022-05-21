@@ -20,6 +20,7 @@ esp_netif_t *netif_sta = NULL;
 /*******************************************************
  *                Function Definitions
  *******************************************************/
+//metodo para enviar informacion
 void esp_mesh_p2p_tx_main(void *arg)
 {
     int i;
@@ -45,7 +46,7 @@ void esp_mesh_p2p_tx_main(void *arg)
     }
     vTaskDelete(NULL);
 }
-
+//metodo para recibir informacion
 void esp_mesh_p2p_rx_main(void *arg)
 {
     int recv_count = 0;
@@ -72,7 +73,7 @@ void esp_mesh_p2p_rx_main(void *arg)
     }
     vTaskDelete(NULL);
 }
-
+    //incia la red p2p
     esp_err_t esp_mesh_comm_p2p_start(void)
     {
         bool is_comm_p2p_started = false;
@@ -85,6 +86,7 @@ void esp_mesh_p2p_rx_main(void *arg)
         return ESP_OK;
     }
 
+//manejador de los eventos de la red mesh
 void mesh_event_handler(void *arg, esp_event_base_t event_base,
                         int32_t event_id, void *event_data)
 {
@@ -320,7 +322,7 @@ void ip_event_handler(void *arg, esp_event_base_t event_base,
     ESP_LOGI(MESH_TAG, "<IP_EVENT_STA_GOT_IP>IP:" IPSTR, IP2STR(&event->ip_info.ip));
 }
 #endif
-esp_err_t iniciar_mesh_red()
+esp_err_t iniciar_mesh_red()//inicia la red mesh, es importante tener en el cmMakeLists nvs_flash y el mqtt tambien
 {
     esp_err_t err = ESP_OK;
     err = nvs_flash_init();

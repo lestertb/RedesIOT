@@ -18,8 +18,8 @@
 
 #define NUM_SAMPLES 50
 
-esp_err_t init_adc_config();
-int filtrar_datos();
-float calcular_porcentaje_humedad();
+esp_err_t init_adc_config();//configura el ancho del adc y su atenuacion
+int filtrar_datos();//hace un filtrado de datos del sensor
+float calcular_porcentaje_humedad();//fucion para castear la humedad que se recibe desde el sensor
 
 #endif
